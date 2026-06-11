@@ -1,8 +1,8 @@
 <template>
-    <article class="container h-23  flex justify-between items-center">
+    <article class="container h-10  flex justify-between items-center">
         <section>
             <NuxtLink :href="'/'">
-                <NuxtImg src="./favicon.svg" alt="logo" class="inline-block mr-2 min-w-28 max-w-20" />
+                <NuxtImg src="./favicon.svg" alt="logo" class="inline-block mr-2  max-w-20" />
             </NuxtLink>
 
 
@@ -29,10 +29,10 @@ import { ref } from 'vue'
 import { authLogoutService } from '~/services/authService';
 
 const navItems = ref([
-    { name: 'nav.home', link: '/' },
-    { name: 'nav.about', link: '/about' },
-    { name: 'nav.services', link: '/services' },
-    { name: 'nav.contact', link: '/contact' }
+    { name: 'Home', link: '/' },
+    { name: 'About', link: '/about' },
+    { name: 'Profile', link: '/dashbord/staff' },
+    { name: 'Users', link: '/dashbord/users' }
 ])
 
 </script>

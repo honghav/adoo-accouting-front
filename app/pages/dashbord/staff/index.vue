@@ -24,25 +24,61 @@
                     Status: <strong>{{ currentUser?.status }}</strong>
                 </p>
             </div>
+            <!-- Upload image  -->
+            <!-- <input type="file" accept="image/*" @change="onFileChange" />
 
+            <img v-if="image" :src="image" class="w-40 h-40 object-cover mt-4" /> -->
             <!-- Created & Updated -->
             <!-- <div class="mt-6 text-sm text-gray-400">
                 <p>Created at: {{ formatDate(currentUser?.createdAt) }}</p>
                 <p>Last updated: {{ formatDate(currentUser?.updatedAt) }}</p>
             </div> -->
+            <!-- 
+            <UButton @click="uploadImage" variant="outline" color="primary" size="md" class="mt-6">
+                Upload Image
+            </UButton> -->
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '@vueuse/core';
+import type { UserDTO } from '~/model/auth/User.dto';
 import { currentUserData, getCurrentUserService } from '~/services/authService';
 
 const authToken = useAuthToken()
-const currentUser = currentUserData.value
+const currentUser = computed(() => currentUserData.value)
+const { toBase64, toRawBase64 } = useBase64()
 
+const image = ref('')
+
+const onFileChange = async (event: Event) => {
+    const target = event.target as HTMLInputElement
+
+    if (!target.files?.length) return
+
+    const file = target.files[0]
+    if (!file) return
+
+    // Full Base64 (with data:image/png;base64,)
+    image.value = await toBase64(file)
+
+    // Or raw Base64 only
+    // image.value = await toRawBase64(file)
+
+    console.log("image:", image.value)
+}
+
+function uploadImage() {
+    alert('Uploading image...')
+    console.log('Uploading image:', image.value)
+}
+watch(
+    authToken,
+    async (newToken) => {
+        await getCurrentUserService(newToken as string)
+    },
+    { immediate: true }
+)
 onMounted(async () => {
-    await getCurrentUserService(authToken.value as string)
-    console.log('Current User Data:', currentUserData.value)
 })
 </script>

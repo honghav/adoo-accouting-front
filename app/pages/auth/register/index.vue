@@ -2,7 +2,10 @@
         <div class="max-w-md mx-auto p-6 bg-white rounded shadow">
             <h2 class="text-xl font-semibold mb-4">Register</h2>
             <form @submit.prevent="handleSubmit" class="space-y-4">
-
+                <img v-if="form.image" :src="form.image" class="w-40 h-40 object-cover mt-4" />
+                <!-- Image -->
+                <UInput v-model="form.image" type="file" accept="image/*" @change="onFileChange"
+                    placeholder="Profile Image URL" />
                 <!-- Name -->
                 <UInput v-model="form.name" placeholder="Full Name" />
 
@@ -12,15 +15,13 @@
                 <!-- Password -->
                 <UInput v-model="form.password" type="password" placeholder="Password" />
 
-                <!-- Image -->
-                <UInput v-model="form.image" type="text" placeholder="Profile Image URL" />
 
                 <!-- Role -->
                 <!-- <USelect v-model="form.role" :options="roleOptions" placeholder="Select Role" /> -->
 
                 <!-- Position -->
                 <!-- <USelect v-model="form.position" :options="positionOptions" placeholder="Select Position" /> -->
-
+                <br>
                 <USelect v-model="form.role" :items="roleOptions" placeholder="Select role" />
 
                 <USelect v-model="form.position" :items="positionOptions" placeholder="Select position" />
@@ -39,6 +40,7 @@ import { UserRole, UserPosition } from '~/model/auth/authEmun'
 import type { RegisterDTO } from '~/model/auth/register.dto'
 import { authRegisterService } from '~/services/authService'
 
+const { toBase64, toRawBase64 } = useBase64()
 
 const registerLoading = ref(false)
 const form = ref<RegisterDTO>({
@@ -54,6 +56,23 @@ const roleOptions = Object.values(UserRole).map(role => ({
     label: role.charAt(0).toUpperCase() + role.slice(1),
     value: role
 }))
+const onFileChange = async (event: Event) => {
+    const target = event.target as HTMLInputElement
+
+    if (!target.files?.length) return
+
+    const file = target.files[0]
+    if (!file) return
+
+    // Full Base64 (with data:image/png;base64,)
+    form.value.image = await toBase64(file)
+
+    // Or raw Base64 only
+    // form.value.image = await toRawBase64(file)
+
+    console.log("image:", form.value.image)
+}
+
 
 const positionOptions = Object.values(UserPosition).map(position => ({
     label: position

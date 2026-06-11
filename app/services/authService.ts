@@ -65,7 +65,6 @@ export const authLogoutService = () => {
   const token = useCookie(config.public.tokenKey)
   token.value = null
           navigateTo('/auth/login');
-
 }
 
 export const currentUserData = computed(() => getCurrentUserRes.value);
