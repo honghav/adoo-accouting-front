@@ -30,7 +30,7 @@ import { authLogoutService } from '~/services/authService';
 
 const navItems = ref([
     { name: 'Home', link: '/' },
-    { name: 'About', link: '/about' },
+    { name: 'Face ID', link: '/faceid' },
     { name: 'Profile', link: '/dashbord/staff' },
     { name: 'Users', link: '/dashbord/users' }
 ])
