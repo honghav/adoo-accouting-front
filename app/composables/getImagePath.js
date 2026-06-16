@@ -16,5 +16,5 @@ export default function getImagePath(image, path = "") {
   // Determine module folder
   // let module = path || roleModuleStore.current_module
 
-  return `${config.public.baseUrl}/images/${path}/${image}`
+  return `${config.public.baseUrl}${path}${image}`
 }
